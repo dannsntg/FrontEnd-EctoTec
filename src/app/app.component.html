@@ -17,22 +17,26 @@
         </div>
         <div class="row">
           <div class="col-25"><label>Fecha:</label></div>
-          <div class="col-75"><input class="classdate" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-
-            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+          <div class="col-75"><input class="classdate" type="date" name="dp" [(ngModel)]="model" ngbDatepicker
+              #d="ngbDatepicker">
           </div>
         </div>
         <div class="row">
           <div class="col-25"><label>Ciudad y Estado:</label></div>
-          <div class="col-75"><input type="text" name="ciudad"></div>
+          <div class="col-75"><input type="text" name="ciudad" (keyup)="showSearchResults($event)">
+            <ul *ngIf="searching === true" class="search-results">
+              <li *ngFor="let item of faqs | search : searchText">
+                <a>{{ item }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="row">
           <div class="rowsend">
             <button class="btn btn-primary" type="submit">Enviar</button>
           </div>
         </div>
-
-        <pre>Model: {{ model | json }}</pre>
+        {{searching}}
       </form>
     </div>
   </div>
