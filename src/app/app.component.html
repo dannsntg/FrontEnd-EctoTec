@@ -5,27 +5,29 @@
       <form>
         <div class="row">
           <div class="col-25"><label>Nombre:</label></div>
-          <div class="col-75"><input type="text" name="nombre"></div>
+          <div class="col-75"><input type="text" name="nombre" [(ngModel)]="_name"></div>
         </div>
         <div class="row">
           <div class="col-25"><label>E-mail:</label></div>
-          <div class="col-75"><input type="text" name="email"></div>
+          <div class="col-75"><input (keyup)="validateEmail($event)" type="email" name="email" [(ngModel)]="_email">
+          </div>
         </div>
         <div class="row">
           <div class="col-25"><label>Teléfono:</label></div>
-          <div class="col-75"><input type="text" name="telefono"></div>
+          <div class="col-75"><input (keyup)="validateTelphone($event)" type="text" name="telefono"
+              [(ngModel)]="_telphone"></div>
         </div>
         <div class="row">
           <div class="col-25"><label>Fecha:</label></div>
-          <div class="col-75"><input class="classdate" type="date" name="dp" [(ngModel)]="model" ngbDatepicker
-              #d="ngbDatepicker">
+          <div class="col-75"><input class="classdate" type="date" name="fecha" [(ngModel)]="_date">
           </div>
         </div>
         <div class="row">
           <div class="col-25"><label>Ciudad y Estado:</label></div>
-          <div class="col-75"><input type="text" name="ciudad" (keyup)="showSearchResults($event)">
-            <ul *ngIf="searching === true" class="search-results">
-              <li *ngFor="let item of faqs | search : searchText">
+          <div class="col-75"><input type="text" [(ngModel)]="_city" name="ciudad" (keyup)="showSearchResults($event)">
+            <ul *ngIf="searching === true" class="list-group">
+              <li *ngFor="let item of cities | filter : _city" class="list-group-item list-group-item-action"
+                (click)="searchText=item">
                 <a>{{ item }}</a>
               </li>
             </ul>
@@ -33,11 +35,37 @@
         </div>
         <div class="row">
           <div class="rowsend">
-            <button class="btn btn-primary" type="submit">Enviar</button>
+            <button class="btn btn-primary" (click)="send()" type="submit">Enviar</button>
           </div>
         </div>
-        {{searching}}
       </form>
     </div>
   </div>
 </div>
+
+<ng-template #errorModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <span>Contacto</span>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p> <span>Se encontraron los siguientes errroes en su sus datos de contacto</span></p>
+    
+      <div class="container">
+        <ul class="list-group">
+          <li *ngFor="let item of errorList">
+            <a>{{ item }}</a>
+          </li>
+        </ul>
+      </div>
+      <p> <span>Por favor corrija los errores para continuar</span></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Ok</button>
+
+  </div>
+</ng-template>
