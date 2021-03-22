@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CitiesService } from './apis/cities.service';
+
 
 @Component({
   selector: 'app-root',
@@ -20,11 +22,13 @@ export class AppComponent {
 
   @ViewChild('errorModal') errorModal: ElementRef;
 
-  cities = ["11111111", "2222222", "3333333"]
+  cities = []
   errorList = [];
 
-  constructor(private modalService: NgbModal) {
-
+  constructor(private modalService: NgbModal, private citiesService: CitiesService) {
+    citiesService.getCities().subscribe(res=>{
+      this.cities=res;
+    });
   }
 
   public showSearchResults(event: any): void {
